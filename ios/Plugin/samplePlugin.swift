@@ -14,5 +14,22 @@ public class samplePlugin: CAPPlugin {
         call.resolve([
             "value": implementation.echo(value)
         ])
+        
+        appGoingToBackground()
+    }
+    override public func load() {
+      NotificationCenter.default.addObserver(
+        self,
+        selector: #selector(appGoingToBackground),
+        name: UIApplication.didEnterBackgroundNotification,
+        object: nil)
+    }
+
+    deinit {
+      NotificationCenter.default.removeObserver(self)
+    }
+
+    @objc func appGoingToBackground() {
+        self.notifyListeners("ApplicationGoingToBackground", data: ["sample": "Uday@123"])
     }
 }
